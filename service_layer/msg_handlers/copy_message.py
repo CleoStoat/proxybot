@@ -14,6 +14,15 @@ def copy_message_msg_handler(
     if update.effective_chat.id == owner_chat:
         return
 
+    origin_chat_id: int = update.effective_chat.id
+    with uow:
+        proxy_chat = uow.repo.find_proxychat(origin_chat_id)
+
+        if proxy_chat is not None:
+            if proxy_chat.listening == False:
+                return
+        uow.commit()
+    
     from_user_name: str
     from_chat_name: str
 
@@ -34,7 +43,6 @@ def copy_message_msg_handler(
     except Exception:
         return
 
-    origin_chat_id: int = update.effective_chat.id
     origin_message_id: int = update.effective_message.message_id
     copied_message_id: int = copied.message_id
 
