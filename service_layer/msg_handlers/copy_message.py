@@ -10,8 +10,8 @@ def copy_message_msg_handler(
     update: Update, context: CallbackContext, uow: AbstractUnitOfWork
 ) -> None:
     owner_chat: int = config.get_bot_owner_user_id()
-    # if update.effective_chat.id == owner_chat:
-    #     return
+    if update.effective_chat.id == owner_chat:
+        return
     
     from_user_name: str
     from_chat_name: str
