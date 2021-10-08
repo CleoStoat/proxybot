@@ -28,6 +28,7 @@ def start_listening_cmd(
 
     with uow:
         uow.repo.set_proxychat_listening(chat_id=chat_id, listening=True)
+        uow.commit()
 
     text = "Started listening."
     update.effective_message.reply_text(text=text, quote=True)
