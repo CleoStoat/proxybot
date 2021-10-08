@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext.callbackcontext import CallbackContext
+from telegram.utils.helpers import effective_message_type
 
 from service_layer.unit_of_work import AbstractUnitOfWork
 import config
@@ -31,11 +32,18 @@ def send_cmd(
         return
 
     try:
-        context.bot.copy_message(
-            chat_id=chat_id,
-            from_chat_id=owner_chat,
-            message_id=update.effective_message.reply_to_message.message_id,
+        if effective_message_type(update.effective_message.reply_to_message) == "text":
+            context.bot.send_message(
+                chat_id=chat_id,
+                text=update.effective_message.reply_to_message.text,
+                disable_web_page_preview=False,
             )
+        else:
+            context.bot.copy_message(
+                chat_id=chat_id,
+                from_chat_id=owner_chat,
+                message_id=update.effective_message.reply_to_message.message_id,
+                )
     except Exception:
         text = "Couldn't send message."
         update.effective_message.reply_text(text=text, quote=True)

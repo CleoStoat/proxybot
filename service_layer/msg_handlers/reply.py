@@ -1,10 +1,11 @@
 from typing import Optional
 from telegram import Update
 from telegram.ext.callbackcontext import CallbackContext
-from domain.model import ProxyChat
+from telegram.utils.helpers import effective_message_type
 
 from service_layer.unit_of_work import AbstractUnitOfWork
 import config
+from domain.model import ProxyChat
 
 
 def reply_msg_handler(
@@ -30,12 +31,19 @@ def reply_msg_handler(
     message_to_copy_id = update.effective_message.message_id
 
     try:
-        context.bot.copy_message(
-            chat_id=target_chat_id,
-            from_chat_id=owner_chat,
-            message_id=message_to_copy_id,
-            reply_to_message_id=target_message_id,
-        )
+        if effective_message_type(update.effective_message) == "text":
+            context.bot.send_message(
+                chat_id=target_chat_id,
+                text=update.effective_message.text,
+                disable_web_page_preview=False,
+            )
+        else:
+            context.bot.copy_message(
+                chat_id=target_chat_id,
+                from_chat_id=owner_chat,
+                message_id=message_to_copy_id,
+                reply_to_message_id=target_message_id,
+            )
     except Exception:
         text = "Couldn't send message."
         update.effective_message.reply_text(text=text, quote=True)
