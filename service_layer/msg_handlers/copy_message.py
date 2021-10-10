@@ -54,7 +54,7 @@ def copy_message_msg_handler(
 
     from_user_id: int = update.effective_user.id
 
-    text = f"User name: {em(from_user_name, version=2)}\nChat name: {em(from_chat_name, version=2)}\nChat id: `{em(str(origin_chat_id), version=2)}`\nUser id: `{em(str(from_user_id), version=2)}`"
+    text = f"User: `{em(str(from_user_id), version=2)}` {em(from_user_name, version=2)}\nChat: `{em(str(origin_chat_id), version=2)}` {em(from_chat_name, version=2)}"
     copied2 = context.bot.send_message(
         chat_id=owner_chat, text=text, reply_to_message_id=copied_message_id, parse_mode="MarkdownV2"
     )
