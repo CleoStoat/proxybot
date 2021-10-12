@@ -10,8 +10,8 @@ import config
 def copy_message_msg_handler(
     update: Update, context: CallbackContext, uow: AbstractUnitOfWork
 ) -> None:
-    owner_chat: int = config.get_bot_owner_user_id()
-    if update.effective_chat.id == owner_chat:
+    bot_chat: int = config.get_bot_group_id()
+    if update.effective_chat.id == bot_chat:
         return
 
     origin_chat_id: int = update.effective_chat.id
@@ -51,7 +51,7 @@ def copy_message_msg_handler(
 
     try:
         copied: MessageId = update.effective_message.copy(
-            owner_chat,
+            bot_chat,
             reply_to_message_id=reply_to_message_id
         )
     except Exception:
@@ -70,7 +70,7 @@ def copy_message_msg_handler(
 
     text = f"User: `{em(str(from_user_id), version=2)}` {em(from_user_name, version=2)}\nChat: `{em(str(origin_chat_id), version=2)}` {em(from_chat_name, version=2)}"
     copied2 = context.bot.send_message(
-        chat_id=owner_chat, text=text, reply_to_message_id=copied_message_id, parse_mode="MarkdownV2"
+        chat_id=bot_chat, text=text, reply_to_message_id=copied_message_id, parse_mode="MarkdownV2"
     )
     
     with uow:

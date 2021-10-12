@@ -21,3 +21,6 @@ def get_bot_token() -> str:
 
 def get_bot_owner_user_id() -> int:
     return int(os.getenv("BOT_OWNER_USER_ID", "0"))
+
+def get_bot_group_id() -> int:
+    return int(os.getenv("BOT_GROUP_ID", "0"))

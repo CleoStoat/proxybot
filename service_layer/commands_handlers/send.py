@@ -10,8 +10,8 @@ import config
 def send_cmd(
     update: Update, context: CallbackContext, uow: AbstractUnitOfWork
 ) -> None:
-    owner_chat: int = config.get_bot_owner_user_id()
-    if update.effective_chat.id != owner_chat:
+    bot_chat: int = config.get_bot_group_id()
+    if update.effective_chat.id != bot_chat:
         return
     
     if update.effective_message.reply_to_message is None:
@@ -44,7 +44,7 @@ def send_cmd(
         else:
             copied = context.bot.copy_message(
                 chat_id=chat_id,
-                from_chat_id=owner_chat,
+                from_chat_id=bot_chat,
                 message_id=update.effective_message.reply_to_message.message_id,
                 )
 

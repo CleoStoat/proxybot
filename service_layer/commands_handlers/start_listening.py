@@ -8,8 +8,8 @@ import config
 def start_listening_cmd(
     update: Update, context: CallbackContext, uow: AbstractUnitOfWork
 ) -> None:
-    owner_chat: int = config.get_bot_owner_user_id()
-    if update.effective_chat.id != owner_chat:
+    bot_chat: int = config.get_bot_group_id()
+    if update.effective_chat.id != bot_chat:
         return
     
     if len(context.args) < 1:

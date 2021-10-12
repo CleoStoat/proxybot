@@ -11,8 +11,8 @@ from domain.model import ProxyChat
 def list_chats_cmd(
     update: Update, context: CallbackContext, uow: AbstractUnitOfWork
 ) -> None:
-    owner_chat: int = config.get_bot_owner_user_id()
-    if update.effective_chat.id != owner_chat:
+    bot_chat: int = config.get_bot_group_id()
+    if update.effective_chat.id != bot_chat:
         return
 
     proxy_chats: List[ProxyChat]
