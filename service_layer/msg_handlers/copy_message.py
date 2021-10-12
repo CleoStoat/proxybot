@@ -40,7 +40,7 @@ def copy_message_msg_handler(
     if update.effective_message.reply_to_message is not None:
         # Find the message id in the copied messages
         with uow:
-            copied_reply = uow.repo.find_copied_message(update.effective_message.reply_to_message.message_id)
+            copied_reply = uow.repo.find_copied_message_by_origin_id(update.effective_message.reply_to_message.message_id)
             if copied_reply is not None:
                 reply_to_message_id = copied_reply.copied_message_id
 

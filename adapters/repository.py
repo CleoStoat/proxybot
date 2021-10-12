@@ -18,6 +18,12 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def find_copied_message
+    def find_copied_message_by_origin_id(self, origin_message_id: int) -> Optional[CopiedMessage]:
+        _by_origin_id(self, origin_message_id: int) -> Optional[CopiedMessage]:
+        raise NotImplementedError
+
+    @abstractmethod
     def add_copied_message(
         self, 
         origin_chat_id: int, 
@@ -63,6 +69,11 @@ class SqlAlchemyRepository(AbstractRepository):
         self.session.expunge_all()
         return copied_message
 
+    def find_copied_message_by_origin_id(self, origin_message_id: int) -> Optional[CopiedMessage]:
+        copied_message = self.session.query(CopiedMessage).filter_by(origin_message_id=origin_message_id).first()
+        self.session.expunge_all()
+        return copied_message
+    
     def add_copied_message(
         self, 
         origin_chat_id: int, 
