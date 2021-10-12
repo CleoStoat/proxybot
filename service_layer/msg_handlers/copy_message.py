@@ -36,10 +36,24 @@ def copy_message_msg_handler(
     else:
         from_chat_name = update.effective_chat.title
 
+    reply_to_message_id = None
+    if update.effective_message.reply_to_message is not None:
+        # Find the message id in the copied messages
+        with uow:
+            copied_reply = uow.repo.find_copied_message(update.effective_message.reply_to_message.message_id)
+            if copied_reply is not None:
+                reply_to_message_id = copied_reply.copied_message_id
+
+            uow.commit()
+
+
     copied: MessageId
 
     try:
-        copied: MessageId = update.effective_message.copy(owner_chat)
+        copied: MessageId = update.effective_message.copy(
+            owner_chat,
+            reply_to_message_id=reply_to_message_id
+        )
     except Exception:
         return
 
