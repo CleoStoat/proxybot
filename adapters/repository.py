@@ -18,9 +18,7 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def find_copied_message
     def find_copied_message_by_origin_id(self, origin_message_id: int) -> Optional[CopiedMessage]:
-        _by_origin_id(self, origin_message_id: int) -> Optional[CopiedMessage]:
         raise NotImplementedError
 
     @abstractmethod
